@@ -1,0 +1,40 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>KNN Prediction</title>
+</head>
+<body>
+    <h2>Enter Features for Prediction</h2>
+    <form id="predict-form">
+        <input type="number" step="any" placeholder="Feature 1" id="f1"><br>
+        <input type="number" step="any" placeholder="Feature 2" id="f2"><br>
+        <input type="number" step="any" placeholder="Feature 3" id="f3"><br>
+        <input type="number" step="any" placeholder="Feature 4" id="f4"><br>
+        <button type="submit">Predict</button>
+    </form>
+
+    <h3 id="result"></h3>
+
+    <script>
+        document.getElementById('predict-form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const features = [
+                parseFloat(document.getElementById('f1').value),
+                parseFloat(document.getElementById('f2').value),
+                parseFloat(document.getElementById('f3').value),
+                parseFloat(document.getElementById('f4').value),
+            ];
+
+            const response = await fetch('http://localhost:5000/predict', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ features: features })
+            });
+
+            const result = await response.json();
+            document.getElementById('result').innerText = `Prediction: ${result.prediction}`;
+        });
+    </script>
+</body>
+</html>
